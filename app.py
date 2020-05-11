@@ -28,10 +28,10 @@ def create_app(test_config=None):
 
   return app
 
-APP = create_app()
+app = create_app()
 
 
-oauth = OAuth(APP)
+oauth = OAuth(app)
 
 auth0 = oauth.register(
     'auth0',
@@ -50,7 +50,7 @@ auth0 = oauth.register(
 
 
 
-@APP.after_request
+@app.after_request
 def after_request(response):
         response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,true')
         response.headers.add('Access-Control-Allow-Methods', 'GET,PATCH,PUT,POST,DELETE,OPTIONS')
@@ -59,16 +59,16 @@ def after_request(response):
 <----------FrontEnd---------------------------->
 '''
 
-@APP.route('/', methods=['GET'])
+@app.route('/', methods=['GET'])
 def index():
 	return render_template('home.html')
 
-@APP.route('/create', methods=['GET'])
+@app.route('/create', methods=['GET'])
 def create_actor_profile():
 	
 	return render_template('index.html')
 
-@APP.route('/create-movie', methods=['GET'])
+@app.route('/create-movie', methods=['GET'])
 def create_movie_profile():
 	
 	return render_template('create_movie.html')
@@ -77,27 +77,27 @@ def create_movie_profile():
 def get_actor_profile(actor_id):
 	return render_template('profile.html')
 
-@APP.route('/profile-movie/<int:movie_id>', methods=['GET'])
+@app.route('/profile-movie/<int:movie_id>', methods=['GET'])
 def get_movie_profile(movie_id):
 	return render_template('film_profile.html')
 
-@APP.route('/dashboard')
+@app.route('/dashboard')
 def dashboard():	
     return render_template('dashboard.html')
 
-@APP.route('/callback')
+@app.route('/callback')
 def callback_handling():
     # Handles response from token endpoint
     return redirect('/dashboard')
 
-@APP.route('/login')
+@app.route('/login')
 def login():
     return auth0.authorize_redirect(redirect_uri='http://localhost:8080/callback')
 
 
                            
 
-@APP.route('/logout')
+@app.route('/logout')
 def logout():
     # Clear session stored data
     session.clear()
@@ -110,7 +110,7 @@ def logout():
 '''
 
 
-@APP.route('/actors/<int:actor_id>', methods=['GET'])
+@app.route('/actors/<int:actor_id>', methods=['GET'])
 @requires_auth('get:actor-detail')
 def get_actor(payload,actor_id):
 	
@@ -122,7 +122,7 @@ def get_actor(payload,actor_id):
 			'image_link':actor.image_link
 })
 
-@APP.route('/actors/<int:actor_id>', methods=['DELETE'])
+@app.route('/actors/<int:actor_id>', methods=['DELETE'])
 @requires_auth('delete:actor')
 def delete_actor(payload,actor_id):
 	
@@ -133,7 +133,7 @@ def delete_actor(payload,actor_id):
 })
 
 
-@APP.route('/actors', methods=['GET'])
+@app.route('/actors', methods=['GET'])
 @requires_auth('get:actor')
 def get_actors(payload):
 	print(request.headers)
@@ -156,7 +156,7 @@ def get_actors(payload):
 			})
 	
 
-@APP.route('/actors', methods=['POST'])
+@app.route('/actors', methods=['POST'])
 @requires_auth('post:actor')
 def create_actor(payload):
 	req =request.get_json()
@@ -183,7 +183,7 @@ def create_actor(payload):
 
 
 
-@APP.route('/actors/<int:actor_id>', methods=['PATCH'])
+@app.route('/actors/<int:actor_id>', methods=['PATCH'])
 @requires_auth('patch:actor')
 def edit_actor(payload,actor_id):
 	req =request.get_json()
@@ -219,7 +219,7 @@ def edit_actor(payload,actor_id):
 			})
 
 
-@APP.route('/movies', methods=['GET'])
+@app.route('/movies', methods=['GET'])
 @requires_auth('get:movie')
 def get_movies(payload):
 	
@@ -240,7 +240,7 @@ def get_movies(payload):
 
 
 
-@APP.route('/movies', methods=['POST'])
+@app.route('/movies', methods=['POST'])
 @requires_auth('post:movie')
 def create_movie(payload):
 	req =request.get_json()
@@ -265,7 +265,7 @@ def create_movie(payload):
 
 
 
-@APP.route('/movies/<int:movie_id>', methods=['GET'])
+@app.route('/movies/<int:movie_id>', methods=['GET'])
 @requires_auth('get:movie-detail')
 def get_movie(payload,movie_id):
 	
@@ -276,7 +276,7 @@ def get_movie(payload,movie_id):
 })
 
 
-@APP.route('/movies/<int:movie_id>', methods=['DELETE'])
+@app.route('/movies/<int:movie_id>', methods=['DELETE'])
 @requires_auth('delete:movie')
 def delete_movie(payload,movie_id):
 	
@@ -287,7 +287,7 @@ def delete_movie(payload,movie_id):
 })
 
 
-@APP.route('/movies/<int:movie_id>', methods=['PATCH'])
+@app.route('/movies/<int:movie_id>', methods=['PATCH'])
 @requires_auth('patch:movie')
 def edit_movie(payload,movie_id):
 	req =request.get_json()
