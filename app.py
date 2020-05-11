@@ -5,23 +5,18 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from models import setup_db, Actor, Movie
 from flask_migrate import Migrate
-from flask_wtf import Form
-from flask_wtf import Form
-from wtforms import StringField, SelectField, SelectMultipleField, DateTimeField
-from wtforms.validators import DataRequired, AnyOf, URL
 from auth.auth import AuthError, requires_auth
 from functools import wraps
 import json
 from os import environ as env
 from werkzeug.exceptions import HTTPException
-
 from dotenv import load_dotenv, find_dotenv
 from flask import session
 from flask import url_for
 from authlib.integrations.flask_client import OAuth
 from six.moves.urllib.parse import urlencode
 from flask_cors import cross_origin
-from datetime import datetime
+
 
 
 
