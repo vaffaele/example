@@ -73,7 +73,7 @@ def create_movie_profile():
 	
 	return render_template('create_movie.html')
 
-@APP.route('/profile/<int:actor_id>', methods=['GET'])
+@app.route('/profile/<int:actor_id>', methods=['GET'])
 def get_actor_profile(actor_id):
 	return render_template('profile.html')
 
