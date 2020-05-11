@@ -2,7 +2,7 @@ import os
 from sqlalchemy import Column, String, Integer, create_engine, DateTime
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from datetime import datetime
+
 import json
 
 database_name = "agency"
